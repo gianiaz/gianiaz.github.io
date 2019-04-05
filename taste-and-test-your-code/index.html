@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Taste and Test your code - 12 Giugno 2019 - PUG Sondrio</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/fixes.css">
+    <link rel="stylesheet" href="css/theme/league.css">
+    <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <img id="logo-engineering" src="img/logo_engineering.png"
+         style="height: 12%; position: absolute; bottom: 10px; left: 10px;">
+    <div class="slides">
+
+        <!-- TITOLO -->
+        <section>
+            <section id="title">
+                <h1>Taste and test your code</h1>
+                <h3>Perchè la cosa che ci viene meglio è scrivere bachi</h3>
+                <p>
+                    <a href="https://github.com/gianiaz">Giovanni Battista Lenoci</a> / <a
+                        href="http://twitter.com/gianiaz">@gianiaz</a><br>
+                </p>
+                <small>
+                    <p>
+                        PUG SONDRIO - 12 Giugno 2019
+                    </p>
+                </small>
+            </section>
+        </section>
+
+        <!-- INTRO PERSONALE -->
+        <section id="intro">
+            <section>
+                <h2>Chi sono?</h2>
+                <img src="img/gianiaz.jpg" class="avatar stretch">
+                <div style="float: right">
+                    <ul class="fa-ul">
+                        <li><span class="fa-li"><i class="fa fa-user"></i></span>Giovanni Battista Lenoci</li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-desktop"></i></span>
+                            Senior developer @ <img src="img/logo_engineering_full.png"
+                                                    style="height: 1.6em; box-shadow: none; vertical-align: middle; margin-bottom: 0; margin-top: -0.8em;border:0;box-shadow: none;background: none">
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-github"></i></span>
+                            <a href="https://github.com/gianiaz">@gianiaz</a>
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-twitter"></i></span>
+                            <a href="https://twitter.com/gianiaz">@gianiaz</a>
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-users"></i></span>
+                            Coordinatore PUG Sondrio
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </section>
+
+        <!-- INTRODUZIONE TEMA -->
+        <section>
+            <section>
+                <h1>Perchè scrivere test è importante</h1>
+                <p>
+                    Ogni mille righe di codice <br />scriviamo dai <strong>15 ai 50 bachi<sup>(*)</sup></strong>.
+                    <br />
+                    Il nostro obbiettivo è portare questo valore a 0. (impossibile, ma ci dobbiamo provare).
+                    <br />
+                    <small>*Rif. Code Complete - Steve McConnel</small>
+                </p>
+            </section>
+            <section>
+                <h2>Perchè scrivere test?</h2>
+                <img src="img/scimmia1.gif" />
+                <legend>Un senior developer alle prese con il codice che ha scritto 2 settimane fa.</legend>
+            </section>
+            <section>
+                <h2>Perchè scrivere test?</h2>
+                <h3>No, sul serio</h3>
+                <ul>
+                    <li class="fragment">Perchè non siamo infallibili</li>
+                    <li class="fragment">Perchè individuiamo prima i "code smells"</li>
+                    <li class="fragment">Perchè documentiamo il nostro codice</li>
+                    <li class="fragment">Perchè ci liberiamo dall'ansia</li>
+                </ul>
+                <aside class="notes">
+                    L'espressione code smell (letteralmente "puzza del codice") viene usata per indicare una serie di caratteristiche che il codice sorgente può avere e che sono generalmente riconosciute come probabili indicazioni di un difetto di programmazione.[1] I code smell non sono (e non rivelano) "bug", cioè veri e propri errori, bensì debolezze di progettazione che riducono la qualità del software, a prescindere dall'effettiva correttezza del suo funzionamento. Il code smell spesso è correlato alla presenza di debito tecnico e la sua individuazione è un comune metodo euristico usato dai programmatori come guida per l'attività di refactoring, ovvero l'esecuzione di azioni di ristrutturazione del codice volte a migliorarne la struttura, abbassandone la complessità senza modificarne le funzionalità.
+                </aside>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Quali tipi di test esistono?</h1>
+                <ul>
+                    <li class="fragment">Test Unitari</li>
+                    <li class="fragment">Test Funzionali</li>
+                    <li class="fragment">Test di Integrazione</li>
+                    <li class="fragment">...e mille altri..</li>
+                </ul>
+                <aside class="notes">
+                    Test di regressione, Acceptance Test ecc ecc.
+                </aside>
+            </section>
+            <section>
+                <h3>Piramide alimentare :)</h3>
+                <img src="img/piramide.png" />
+            </section>
+            <section>
+                <h1>Test Unitari</h1>
+
+                <p>
+                    Per unit testing (testing d'unità o testing unitario) si intende l'attività di test di singole unità software. <br />
+                    Per unità si intende normalmente il minimo componente di un programma dotato di funzionamento autonomo (una Classe!)
+                    <br />
+                    <br />
+                    <small>
+                    rif. <a href="https://it.wikipedia.org/wiki/Unit_testing">https://it.wikipedia.org/wiki/Unit_testing</a>
+                    </small>
+                </p>
+            </section>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/highlight/hightlight.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function(){
+                    hljs.initHighlightingOnLoad();
+                }
+            }
+        ]
+    });
+</script>
+</body>
+</html>
