@@ -7,8 +7,8 @@ out/
 .svn
 log/*.log
 tmp/**
-node_modules/
-package-lock.json
+*/node_modules/
+*/test/
 .sass-cache
 css/reveal.min.css
 js/reveal.min.js
