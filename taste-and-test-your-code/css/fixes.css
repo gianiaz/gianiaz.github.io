@@ -46,3 +46,7 @@ span.grey {
     white-space: nowrap;
     text-wrap: none;
 }
+
+.php {
+    font-size:0.8em!important;
+}

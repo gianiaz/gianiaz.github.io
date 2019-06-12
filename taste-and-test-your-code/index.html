@@ -26,13 +26,14 @@
 <div class="reveal">
     <img id="logo-engineering" src="img/logo_engineering.png"
          style="height: 12%; position: absolute; bottom: 10px; left: 10px;">
-    <div class="slides">
+    <aside class="slides">
 
         <!-- TITOLO -->
         <section>
             <section id="title">
-                <h1>Taste and test your code</h1>
-                <h3>Perchè la cosa che ci viene meglio è scrivere bachi</h3>
+                <img src="img/taste-and-test-your-code.jpg" style="width:40%;float:left"/>
+                <h3>Perchè la cosa che ci viene meglio scrivere sono i bachi</h3>
+
                 <p>
                     <a href="https://github.com/gianiaz">Giovanni Battista Lenoci</a> / <a
                         href="http://twitter.com/gianiaz">@gianiaz</a><br>
@@ -108,6 +109,14 @@
         </section>
         <section>
             <section>
+                <h1>DISCLAIMER</h1>
+                <p>
+                    Nell'ambito dei test, la nomenclatura è variegata.
+                </p>
+            </section>
+        </section>
+        <section>
+            <section>
                 <h1>Quali tipi di test esistono?</h1>
                 <ul>
                     <li class="fragment">Test Unitari</li>
@@ -116,27 +125,316 @@
                     <li class="fragment">...e mille altri..</li>
                 </ul>
                 <aside class="notes">
-                    Test di regressione, Acceptance Test ecc ecc.
+                    Test di regressione (il baco bastardello che ritorna ogni tanto), Acceptance Test ecc ecc.
                 </aside>
             </section>
-            <section>
-                <h3>Piramide alimentare :)</h3>
-                <img src="img/piramide.png" />
-            </section>
+        </section>
+        <section>
             <section>
                 <h1>Test Unitari</h1>
-
                 <p>
                     Per unit testing (testing d'unità o testing unitario) si intende l'attività di test di singole unità software. <br />
                     Per unità si intende normalmente il minimo componente di un programma dotato di funzionamento autonomo (una Classe!)
                     <br />
                     <br />
                     <small>
-                    rif. <a href="https://it.wikipedia.org/wiki/Unit_testing">https://it.wikipedia.org/wiki/Unit_testing</a>
+                        rif. <a href="https://it.wikipedia.org/wiki/Unit_testing">https://it.wikipedia.org/wiki/Unit_testing</a>
                     </small>
                 </p>
             </section>
+            <section>
+                <h1>Cosa vuol dire?</h1>
+                <p>
+                    Fare un test unitario vuol dire "ignorare" il resto della nostra applicazione.
+                    <br />
+                    Il test unitario controlla che il nostro codice faccia esattamente quello che ci aspettiamo a livello LOGICO.
+                    <br />
+                    <blockquote>Unit tests tell a developer that the code is doing things right; (*)</blockquote>
+                </p>
+            </section>
+            <section>
+
+                <h1>"Definizioni"</h1>
+            </section>
+            <section>
+                <h2> Stubs </h2>
+                <p>Stubs provide canned answers to calls made during the test, usually not responding at all to anything outside what's programmed in for the test.</p>
+                <p>
+                    <small>
+                        rif. <a href="https://martinfowler.com/articles/mocksArentStubs.html">https://martinfowler.com/articles/mocksArentStubs.html</a>
+                    </small>
+                </p>
+                <aside class="notes">
+                    Gli stub forniscono risposte predefinite alle chiamate effettuate durante il test, di solito non rispondono affatto a nulla al di fuori di ciò che è stato programmato per il test.
+                </aside>
+            </section>
+            <section>
+                <h2> Mocks </h2>
+                <p> Mocks are objects pre-programmed with expectations which form a specification of the calls they are expected to receive</p>
+                <p>
+                    <small>
+                        rif. <a href="https://martinfowler.com/articles/mocksArentStubs.html">https://martinfowler.com/articles/mocksArentStubs.html</a>
+                    </small>
+                </p>
+            </section>
+            <section>
+                <h2>A cosa serve fare il mocking di oggetti?</h2>
+                <p>
+                    <ul>
+                        <li class="fragment">Rimpiazzare un comportamento non deterministico (l'ora o la temperatura ambiente).</li>
+                        <li class="fragment">Se l'oggetto ha degli stati difficili da riprodurre (simulare un eccezione).</li>
+                    </ul>
+                </p>
+                <aside class="notes">
+                    Es.
+                    Ho un metodo di una repository (repositoryPattern) ha come dipendenza un ORM esterno per poter commporre le query.
+                    A seconda della struttura del db queste query possono lanciare alcune eccezioni (unique, vincoli di altro genere).
+                    Se dobbiamo testare il repository potrebbero esserci casi in cui non riusciamo a riprodurre in modo puntuale una delle possibili
+                    eccezioni.
+                    In alcuni casi è accettabile fare un catch generico di \Exception.
+                    In altri casi abbiamo bisogno di gestire una specifica eccezione per reagire di conseguenza.
+                    In questo caso il mocking ci permette di far reagire a determinate chiamate con un eccezione specifica.
+                </aside>
+            </section>
+            <section>
+                <aside class="notes">
+                    <ul>
+                        <li>ConsentsStrategy (strategy pattern definita dalla gang of four "Design Patterns: Elements of Reusable Object-Oriented Software"</li>
+                        <li>Domanda1: C'è qualcosa da mockare qui?</li>
+                        <li>Domanda2: Secondo voi quanti metodi avrà il nostro test?</li>
+                        <li>Domanda3: Su cosa faremo le asserzioni?</li>
+                    </ul>
+                </aside>
+
+                <h3>2 chiacchiere su un caso semi reale</h3>
+
+                <pre class="stretch"><code class="php">
+class ConsentsBagStrategy
+{
+    /** @var ConsentsStrategy */
+    private $consentsStrategy;
+
+    public function __construct(
+        ConsentsStrategy $ConsentsStrategy
+    ) {
+        $this->consentsStrategy = $ConsentsStrategy;
+    }
+
+    public function applyStrategy(
+        ?ConsentsBag $previousConsentsBag,
+        ?ConsentsBag $newConsentsBag): ?ConsentsBag
+    {
+        if (null === $newConsentsBag) {
+            return $previousConsentsBag;
+        }
+        if (null === $previousConsentsBag) {
+            return $newConsentsBag;
+        }
+
+        $this->mergeConsents($previousConsentsBag, $newConsentsBag->getConsents());
+
+        return $previousConsentsBag;
+    }
+
+    private function mergeConsents(ConsentsBag $consentsBag, array $Consents): void
+    {
+        $consents = $this->consentsStrategy->merge($consentsBag->getConsents(), $Consents);
+        foreach ($consents as $businessUnit => $consent) {
+            $consentsBag->setConsent($consent, $businessUnit);
+        }
+    }
+}
+                </code>
+                </pre>
+            </section>
         </section>
+        <section>
+            <section>
+                <h1>Test Funzionali</h1>
+                <p>
+                    I test funzionali non si chiamano in questo modo perchè testano una funzione, bensì perchè testano una funzionalità, una piccola fetta
+                    della nostra applicazione che può coinvolgere servizi esterni (il web server o il database ad esempio).
+                    <blockquote>
+                        functional tests tell a developer that the code is doing the right things.
+                    </blockquote>
+                </p>
+            </section>
+
+            <section>
+                <h2>Come individuo una funzionalità?</h2>
+                <ul>
+                    <li class="fragment">
+                        Voglio assicurarmi che una pagina web risponda correttamente, testando ad esempio il codice di ritorno http o il contenuto della pagina.
+                    </li>
+                    <li class="fragment">
+                        Voglio assicurarmi che un repository stia ritornando proprio quello che mi aspetto interrogando il database.
+                    </li>
+                </ul>
+                <aside class="notes">
+                    Introdurre concetto di fixtures.
+                </aside>
+            </section>
+            <section>
+                <h2>Cosa sono le Fixtures</h2>
+
+                Le fixtures di test si riferisco ad uno stato prefissato usato come linea di partenza per testare il software.
+                <br />
+
+                Leggi: Se voglio testare cosa risponde il mio db in determinate condizioni, devo avere dei dati simulati ben conosciuti
+                per poter sapere sempre da che stato parto.
+            </section>
+            <section>
+                <pre class="stretch"><code class="php">
+class ShutdownRepository extends BaseRepository
+{
+    protected function findNotAccomplishedShutdownRequestsQueryBuilder(): QueryBuilder
+    {
+        $queryBuilder = $this->createQueryBuilderWithDefaultAlias();
+        $this->filterByActive($queryBuilder);
+        return $queryBuilder;
+    }
+
+    /**
+    * @return AbstractShutdown[]
+    */
+    public function findNotAccomplishedShutdownRequests(): array
+    {
+        return $this->findNotAccomplishedShutdownRequestsQueryBuilder()
+                    ->getQuery()
+                    ->getResult();
+    }
+
+    /**
+    * @throws \Doctrine\ORM\NonUniqueResultException
+    */
+    public function existsShutDownRequests(): bool
+    {
+        $queryBuilder = $this->findNotAccomplishedShutdownRequestsQueryBuilder();
+        $queryBuilder->select('count(' . $this->getAlias() . '.id)');
+        return $queryBuilder->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    protected function filterByActive(QueryBuilder $queryBuilder): void
+    {
+        $queryBuilder->andWhere($this->getAlias() . '.restartRequestedAt IS NULL');
+    }
+}
+                </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h1>Test integrazione</h1>
+                <p>
+                    Il test di integrazione è un tipo di test che verifica l'integrazione tra più sistemi.
+                    <br />
+                    Questo tipo di test è molto oneroso, perchè richiede di avere un'ambiente di test che sia il più
+                    possibile simile (l'ideale è che sia uguale) all'ambiente di produzione.
+                    <br />
+                    Non sempre è necessario avere test di integrazione, e generalmente si testano gli "happy path".
+                </p>
+            </section>
+            <section>
+                <h1>Esempio di sistema che richiede un test di integrazione</h1>
+            </section>
+            <section>
+                <img src="img/complex-system-architecture.png" />
+            </section>
+
+        </section>
+        <section>
+            <section>
+                <h3>Ma cosa vuol dire testare?</h3>
+                <p>
+                    <img class="fragment" src="img/say-php-again.jpeg" />
+                    <br />
+                    <span class="fragment">Vuol dire scrivere codice PHP</span>
+                </p>
+            </section>
+            <section>
+                <h3>In quale proporzione dobbiamo testare?</h3>
+                <img src="img/piramide.png" />
+
+                <aside class="notes">
+                    Ci sono casi in cui si ha un'applicazione fantastica che però mostra il segno del tempo.
+                    All'ennesima richiesta di funzionalità in più si arriva al punto che l'inserimento costa troppo perchè
+                    il codice è diventato troppo complesso.
+                    La tentazione di riscrivere tutto da zero con il know how acquisito è forte.
+                    Però le insidie sono dietro l'angolo e si perdono funzionalità, per scelte di svariato tipo si sceglie la
+                    strategia sbagliata e si crea un mostro peggio del precedente, e intanto le vendite calano.
+
+                    Mettere sotto test un sistema già esistente richiede un approccio diverso, quindi in un sistema che sta
+                    già girando è perfettamente accettabile in fase di test cominciare dai test funzionali,
+                    Si crea una "gabbia" di test funzionali che si assicurino ad esempio che il bottone "compra" dell'ecommerce
+                    sia sempre presente sulla pagina di dettaglio di un prodotto, e contestualmente mi assicuro che la pagina
+                    risponda sempre ecc.
+                </aside>
+            </section>
+            <section>
+                <h3>Come scriviamo i test? </h3>
+                <p>
+                    Avvalendoci di librerie che ci facilitano il compito.<br />
+                    Di seguito un elenco degli strumenti che utilizzo quotidianamente per testare:
+                <ul>
+                    <li class="fragment">phpunit/phpunit</li>
+                    <li class="fragment">phpspec/prophecy</li>
+                    <li class="fragment">facile-it/paraunit</li>
+
+                    <li class="fragment">symfony/phpunit-bridge</li>
+                    <li class="fragment">facile-it/symfony-functional-testcase</li>
+                    <li class="fragment">dama/doctrine-test-bundle</li>
+                    <li class="fragment">fzaninotto/faker</li>
+                </ul>
+                </p>
+                <aside class="notes">
+                    <ul>
+                        <li>PHPUNIT : E' il framework che ci mette a disposizione tutte le utilità per poter fare asserzioni di ogni genere, dalle più banali alle più articolate</li>
+                        <li>PROPHECY: E' un motore di mocking, anche phpunit ha il suo, ma prophecy rende a mio parere più leggibile un mock e ti permette di usare il tuo mock come se fosse l'oggetto reale.</li>
+                        <li>PARAUNIT: I test se fatti per bene diventano molti e cominciano ad avere un tempo di esecuzione lungo, paraunit sfrutta tutti i processori che abbiamo oggi per parallelizzare i test. OCCHIO ALLA CONCORRENZA SU DB!</li>
+                        <li>symfony/phpunit-bridge che dire di +? </li>
+                        <li>facile-it/symfony-functional-testcase ha sostituito il liipfunctionaltestbundle, da metodi di utilità per facilitare l'utilizzo del container in ambiente di test</li>
+                        <li>dama/doctrine-test-bundle simula la scrittura su db velocizzando i test e riportando tutto allo stato originale.</li>
+                        <li>fzaninotto/faker</li>
+
+                    </ul>
+                </aside>
+            </section>
+        </section>
+        <section>
+            <img src="img/All.jpg" />
+        </section>
+        <section id="ending">
+            <section>
+                <h2>Grazie per l'attenzione!</h2>
+                <h3>Contatti</h3>
+                <div style="font-size: smaller">
+                    <ul class="fa-ul">
+                        <li>
+                            <span class="fa-li"><i class="fa fa-envelope"></i></span>
+                            <a href="mailto:gianiaz@gmail.com">gianiaz@gmail.com</a>
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-envelope"></i></span>
+                            <a href="mailto:giovanni.lenoci@facile.it">giovanni.lenoci@facile.it</a>
+                            <small style="vertical-align: middle">(we are hiring!)</small>
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-github"></i></span>
+                            <a href="https://github.com/gianiaz">@gianiaz</a>
+                        </li>
+                        <li>
+                            <span class="fa-li"><i class="fa fa-twitter"></i></span>
+                            <a href="https://twitter.com/gianiaz">@gianiaz</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+            <section>
+                <h2>Domande?</h2>
+            </section>
+        </section>
+
     </div>
 </div>
 
